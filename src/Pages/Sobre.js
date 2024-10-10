@@ -18,7 +18,7 @@ const Sobre = () => {
       image: joyceFoto 
     },
     {
-      name: 'Isabela',
+      name: 'Isabela Araujo',
       image: isabelaFoto 
     },
     {
