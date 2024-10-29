@@ -1,0 +1,36 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0d0b3f;
+    color: white;
+    text-align: center;
+  }
+  
+  .home-logo {
+    width: 100px;
+    margin-bottom: 20px;
+  }
+  
+  .home-title {
+    font-size: 32px;
+    margin: 20px 0;
+  }
+  
+  .home-text {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+  
+  .home-button {
+    background-color: white;
+    color: #0d0b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  

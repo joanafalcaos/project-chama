@@ -1,0 +1,44 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../chama.png'; // Substitua pelo caminho correto da sua imagem de logo
+import './Login.css';
+
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (username === 'admin' && password === 'admin') {
+      sessionStorage.setItem('authenticated', 'true'); // Certifique-se de que está armazenando como string
+      navigate('/'); // Redireciona para a página inicial (Home)
+    } else {
+      alert('Usuário ou senha inválidos');
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <img src={logo} alt="Logo" className="login-logo" />
+      <input
+        type="text"
+        placeholder="Login"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="login-input"
+      />
+      <input
+        type="password"
+        placeholder="Senha"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="login-input"
+      />
+      <p className="login-link">Esqueci a senha</p>
+      <button onClick={handleLogin} className="login-button">Entrar</button>
+      <p className="login-registerText">Não tem conta? Cadastre-se</p>
+    </div>
+  );
+};
+
+export default Login;

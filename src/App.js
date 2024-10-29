@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Home from './Pages/Home';
 import Sobre from './Pages/Sobre';
+import Login from './Pages/Login';
 import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info'; 
 import MenuIcon from '@mui/icons-material/Menu';
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(false);
   const [open, setOpen] = useState(false);
-  
+
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem('authenticated');
+    setAuthenticated(authStatus === 'true'); // Garante que a comparação é com a string 'true'
+  }, []);
+
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -45,8 +52,9 @@ function App() {
         {menuList}
       </Drawer>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sobre" element={<Sobre />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={authenticated ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/sobre" element={authenticated ? <Sobre /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
