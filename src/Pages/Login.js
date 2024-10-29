@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../chama.png'; // Substitua pelo caminho correto da sua imagem de logo
+import logo from '../chama.png'; 
 import './Login.css';
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleLogin = () => {
     if (username === 'admin' && password === 'admin') {
-      sessionStorage.setItem('authenticated', 'true'); // Certifique-se de que está armazenando como string
+      sessionStorage.setItem('authenticated', 'true'); 
       navigate('/'); // Redireciona para a página inicial (Home)
     } else {
       alert('Usuário ou senha inválidos');
