@@ -1,9 +1,10 @@
+// login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../chama.png'; 
+import logo from '../chama2.png'; 
 import './Login.css';
 
-const Login = () => {
+const Login = ({ setAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Login = () => {
   const handleLogin = () => {
     if (username === 'admin' && password === 'admin') {
       sessionStorage.setItem('authenticated', 'true'); 
+      setAuthenticated(true); // Atualiza o estado authenticated
       navigate('/'); // Redireciona para a página inicial (Home)
     } else {
       alert('Usuário ou senha inválidos');

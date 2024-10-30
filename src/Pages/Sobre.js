@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../chama.png'; 
+import logo from '../chama2.png'; 
 import joanaFoto from '../images/joana.jpeg'; 
 import joyceFoto from '../images/joyce.jpeg'; 
 import isabelaFoto from '../images/isabela.jpeg';

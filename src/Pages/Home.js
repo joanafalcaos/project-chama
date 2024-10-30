@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../chama.png'; 
+import logo from '../chama2.png'; 
 import './Home.css';
 
 const Home = () => {
