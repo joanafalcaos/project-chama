@@ -7,6 +7,17 @@
     background-color: #0d0b3f;
 }
 
-h1{
+h4{
     color: aliceblue;
+}
+
+.custom-text-field{
+    width: 600px;
+}
+
+.form-box{
+    background-color: aliceblue;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: #0000;
 }
