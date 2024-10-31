@@ -25,3 +25,8 @@
     max-width: 300px;
     box-sizing: border-box;
 }
+
+.stories-link{
+    text-decoration: none;
+    color: inherit;
+}
