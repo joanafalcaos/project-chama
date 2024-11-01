@@ -12,7 +12,9 @@ const Stories = () => {
           <Link to="/stories/add" className="stories-link">
             <CustomCard title="Relatar queimada" content="Clique aqui para relatar uma queimada" />
           </Link>
+          <Link to="/stories/list" className="stories-link">
           <CustomCard title="Relatos ativos" content="Clique aqui para ver seus relatos ativos" />
+          </Link>
           <CustomCard title="Relatos encerrados" content="Clique aqui para ver seus relatos encerrados" />
         </div>
       </div>

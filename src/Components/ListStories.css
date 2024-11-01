@@ -1,0 +1,28 @@
+.list-stories-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0d0b3f;
+}
+
+.list-itens {
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    box-shadow: #0000;
+    background-color: aliceblue;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.divider {
+    width: 1px; 
+    height: 20px;
+    background-color: gray;
+    margin: 0 10px;
+}

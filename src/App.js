@@ -6,6 +6,7 @@ import Login from './Pages/Login';
 import Layout from './Layout';
 import Stories from './Pages/Stories';
 import AddStory from './Components/AddStory';
+import ListStories from './Components/ListStories';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -39,11 +40,17 @@ function App() {
           </Layout>
         } />
 
-      <Route path="/stories/add" element={
-        <Layout>
-          <AddStory />
-        </Layout>
-      } />
+        <Route path="/stories/add" element={
+          <Layout>
+            <AddStory />
+          </Layout>
+        } />
+
+        <Route path="/stories/list" element={
+          <Layout>
+            <ListStories />
+          </Layout>
+        } />
 
       </Routes>
     </Router>

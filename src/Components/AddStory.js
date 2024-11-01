@@ -39,14 +39,14 @@ const AddStory = () => {
   return (
     <Container maxWidth="false" disableGutters className="add-story-container">
       <Typography variant="h4" gutterBottom>
-        Relate aqui um foco de queimada ou incêndio!
+        Foco de queimada ou incêndio? Denuncie!
       </Typography>
       <Typography
         variant="body1"
         gutterBottom
         sx={{ color: 'aliceblue', padding: '5px' }}
       >
-        Caso tenha encontrado algum foco de queimada ou incêndio, denuncie aqui!
+        Informe abaixo o seu relato preenchendo os campos solicitados.
       </Typography>
       <div className="form-box">
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
