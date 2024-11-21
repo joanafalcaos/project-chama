@@ -7,6 +7,7 @@ import Layout from './Layout';
 import Stories from './Pages/Stories';
 import AddStory from './Components/AddStory';
 import ListStories from './Components/ListStories';
+import Mapa from './Pages/Mapa';
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -51,6 +52,11 @@ function App() {
             <ListStories />
           </Layout>
         } />
+        <Route path="/mapa" element={
+  <Layout>
+    <Mapa />
+  </Layout>
+} />
 
       </Routes>
     </Router>

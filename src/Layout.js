@@ -1,10 +1,10 @@
-// src/Layout.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info'; 
+import InfoIcon from '@mui/icons-material/Info';
 import MenuIcon from '@mui/icons-material/Menu';
+import MapIcon from '@mui/icons-material/Map'; 
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -31,6 +31,10 @@ const Layout = ({ children }) => {
           <ListItemIcon><InfoIcon /></ListItemIcon>
           <ListItemText primary="Sobre" />
         </ListItem>
+        <ListItem button component={Link} to="/mapa"> {/* Novo item de menu */}
+          <ListItemIcon><MapIcon /></ListItemIcon> {/* Ícone para o mapa */}
+          <ListItemText primary="Mapa" />
+        </ListItem>
       </List>
     </div>
   );
@@ -43,7 +47,7 @@ const Layout = ({ children }) => {
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         {menuList}
       </Drawer>
-      {children} {/* Renderiza os filhos passados para este componente */}
+      {children} 
     </div>
   );
 };
