@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importação do Link adicionada
-import logo from '../chama2.png'; 
 import CustomCard from '../Components/Card';
 import './Stories.css';
 
