@@ -6,16 +6,6 @@ const Home = () => {
   return (
     <div className="App">
 
-      <nav className="navbar">
-      <div className="nav-info"><Link to="/Sobre.js">Sobre</Link></div> 
-        <div className="nav-links">
-        <Link to="/Home.js">Home</Link>
-            <Link to="/Listagem.js">Listagem</Link>
-            <Link to="/Mapa.js">Mapa</Link>
-        </div>
-      </nav>
-
-
       <section className="reportar" id="reportar">
         <div className="report-content">
           <h2>Reporte um foco de incêndio</h2>
