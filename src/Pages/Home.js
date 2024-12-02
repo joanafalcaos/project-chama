@@ -1,6 +1,6 @@
 import React from 'react';
 import './Home.css';
-// import bombeiros from './images/bombeiros.png';
+import bombeiros from '../images/bombeiros.png';
 import {Link, Outlet} from "react-router-dom";
 const Home = () => {
   return (
@@ -27,8 +27,8 @@ const Home = () => {
           </p>
           <button className="report-button">Reportar</button>
         </div>
-        {/* <img src={bombeiros} alt="bombeiros" className="report-image"
-        /> */}
+        { <img src={bombeiros} alt="bombeiros" className="report-image"
+        />}
       </section>
     </div>
   );
