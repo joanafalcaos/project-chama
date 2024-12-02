@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { AppBar, Toolbar, Button, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; 
+import LogoutIcon from '@mui/icons-material/Logout';  
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     setOpen(open);
+  };
+
+  // Função de logout
+  const handleLogout = () => {
+    // Limpar os dados de autenticação (exemplo: token do localStorage)
+    localStorage.removeItem('authToken');
+    
+    // Redirecionar para a tela de login ou página inicial
+    navigate('/login'); 
   };
 
   return (
@@ -35,6 +46,10 @@ const Layout = ({ children }) => {
             <Button component={Link} to="/mapa" sx={{ color: '#0A0A33', fontWeight: 'bold', marginLeft: '20px' }}>
               Mapa
             </Button>
+            {/* Botão de Logout com ícone */}
+            <IconButton onClick={handleLogout} sx={{ color: '#0A0A33', marginLeft: '20px' }}>
+              <LogoutIcon />
+            </IconButton>
           </div>
         </Toolbar>
       </AppBar>
