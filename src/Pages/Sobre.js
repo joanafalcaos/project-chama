@@ -8,7 +8,6 @@ import lucasFoto from '../images/lucas.jpeg';
 import ProfilePhoto from '../Components/ProfilePhoto';
 import './Sobre.css';
 
-
 const teamMembers = [
   {
     name: 'Joana Falcão',

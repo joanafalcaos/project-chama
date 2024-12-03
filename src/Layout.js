@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {AppBar,Toolbar,IconButton,Drawer,List,ListItem,ListItemIcon,ListItemText,Button,Divider,Box,} from '@mui/material';
-import {Menu as MenuIcon, Home as HomeIcon, Whatshot as FireIcon, Map as MapIcon, Person as PersonIcon, Info as InfoIcon, Logout as LogoutIcon} from '@mui/icons-material';
+import { AppBar, Toolbar, Button } from '@mui/material';
+import { Home as HomeIcon, Whatshot as FireIcon, Map as MapIcon, Person as PersonIcon, Logout as LogoutIcon } from '@mui/icons-material';
 
 const Layout = ({ children }) => {
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggleDrawer = (isOpen) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setOpen(isOpen);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
@@ -30,10 +22,6 @@ const Layout = ({ children }) => {
     <div>
       <AppBar position="sticky" sx={{ backgroundColor: '#0A0A33', boxShadow: 'none' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <IconButton edge="start" sx={{ color: '#ffff', marginRight: 'auto' }} onClick={toggleDrawer(true)}>
-            <MenuIcon />
-          </IconButton>
-
           {menuOptions.map((option) => (
             <Button
               key={option.label}
@@ -46,47 +34,23 @@ const Layout = ({ children }) => {
             </Button>
           ))}
 
-          <IconButton onClick={handleLogout} sx={{ color: '#ffff', marginLeft: '20px' }}>
+          <Button onClick={handleLogout} sx={{ color: '#ffff', marginLeft: '20px' }}>
             <LogoutIcon />
-          </IconButton>
+          </Button>
         </Toolbar>
       </AppBar>
-
-      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <Box sx={{ width: 250 }}>
-          <Divider />
-
-          <List>
-            {menuOptions.map((option) => (
-              <ListItem button key={option.label} component={Link} to={option.path} onClick={toggleDrawer(false)}>
-                <ListItemIcon>{option.icon}</ListItemIcon>
-                <ListItemText primary={option.label} />
-              </ListItem>
-            ))}
-
-            <ListItem button component={Link} to="/sobre" onClick={toggleDrawer(false)}>
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sobre" />
-            </ListItem>
-          </List>
-          <Divider />
-
-          <List>
-            <ListItem button onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sair" />
-            </ListItem>
-          </List>
-        </Box>
-      </Drawer>
 
       <div style={{ padding: '20px' }}>
         {children}
       </div>
+
+      <footer style={{ backgroundColor: '#0A0A33', color: '#fff', padding: '10px 0', textAlign: 'center' }}>
+        <p>
+          &copy; 2024 CHAMA - Todos os direitos reservados.
+          <Link to="/sobre" style={{ color: '#fff', textDecoration: 'underline' }}><br/>Saiba mais sobre nós</Link>
+        </p>
+      </footer>
+
     </div>
   );
 };
