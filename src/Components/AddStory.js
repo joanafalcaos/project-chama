@@ -1,81 +1,116 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, CircularProgress } from '@mui/material';
 import './AddStory.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { TextField, Button, Box } from '@mui/material';
+import UploadIcon from '@mui/icons-material/Upload';
 
-const AddStory = () => {
-  const [story, setStory] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0A0A33',
+    },
+  },
+});
+
+function AddStory() {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [relato, setRelato] = useState('');
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleRelatoChange = (event) => {
+    setRelato(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
+    // console.log('Formulário enviado!');
+
+    const formData = new FormData();
+    formData.append('description', relato);
+
+    if (selectedFile) {
+      formData.append('image', selectedFile);
+    }
 
     try {
-      const response = await fetch('http://localhost:8080/stories/addStorie', {
+      const response = await fetch('http://localhost:8080/api/reports/addReport', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ description: story }),
+        body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Erro ao enviar a história');
-      }
-
-      const data = await response.json();
-      console.log('História enviada com sucesso:', data);
-      setStory('');
-      setError('');
+      // if (response.ok) {
+      //   console.log('Relato enviado com sucesso!');
+      // } else {
+      //   console.error('Erro ao enviar o relato:', response.statusText);
+      // }
     } catch (error) {
-      console.error('Erro:', error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      console.error('Erro de rede:', error);
     }
   };
 
   return (
-    <Container maxWidth="false" disableGutters className="add-story-container">
-      <Typography variant="h4" gutterBottom>
-        Foco de queimada ou incêndio? Denuncie!
-      </Typography>
-      <Typography
-        variant="body1"
-        gutterBottom
-        sx={{ color: 'aliceblue', padding: '5px' }}
-      >
-        Informe abaixo o seu relato preenchendo os campos solicitados.
-      </Typography>
-      <div className="form-box">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className="story-container">
+      <h3>Identificou um foco de incêndio ou queimada? Relate aqui!</h3>
+      <ThemeProvider theme={theme}>
+        <Box 
+          component="form" 
+          onSubmit={handleSubmit} 
+          className="form-container"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            minWidth: '500px',
+            margin: 'auto',
+          }}
+        >
           <TextField
-            style={{ width: '700px' }}
-            id="storyInput"
-            label="Descreva sua história"
+            label="Relato"
+            variant="outlined"
+            fullWidth
+            required
+            value={relato}
             multiline
             rows={4}
-            value={story}
-            onChange={(e) => setStory(e.target.value)}
-            required
-            variant="outlined"
-            placeholder="Digite aqui sua descrição..."
+            onChange={handleRelatoChange}
           />
-          <Button
-            type="submit"
-            variant="contained"
+
+          <input 
+            accept="image/*" 
+            style={{ display: 'none' }} 
+            id="upload-photo" 
+            type="file" 
+            onChange={handleFileChange}
+          />
+          <label htmlFor="upload-photo">
+            <Button 
+              variant="contained" 
+              color="primary" 
+              component="span"
+              className="button"
+              startIcon={<UploadIcon />}
+            >
+              Upload de Foto
+            </Button>
+          </label>
+
+          {selectedFile && <p className='img-name'>Arquivo selecionado: {selectedFile.name}</p>}
+
+          <Button 
+            type="submit" 
+            variant="contained" 
             color="primary"
-            style={{ marginTop: '16px', width: '80px' }}
-            disabled={loading}
+            className="button"
           >
-            {loading ? <CircularProgress size={24} /> : 'Enviar'}
+            Enviar
           </Button>
-        </form>
-        {error && <Typography color="error">{error}</Typography>}
-      </div>
-    </Container>
+        </Box>
+      </ThemeProvider>
+    </div>
   );
-};
+}
 
 export default AddStory;

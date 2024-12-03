@@ -4,13 +4,10 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #0d0b3f;
     color: white;
-  }
-
-  .stories-container {
+    margin-top: -120px;
     padding: 20px;
-}
+  }
 
 .cards-container {
     display: flex;
@@ -20,13 +17,18 @@
     text-align: center;
 }
 
-.card {
-    flex: 1 1 30%;
-    max-width: 300px;
-    box-sizing: border-box;
-}
-
 .stories-link{
     text-decoration: none;
     color: inherit;
+}
+
+.home-title{
+    color: #0A0A33;
+}
+
+.home-subtitle{
+    color: #0A0A33;
+    margin-top: -10px;
+    margin-bottom: 60px;
+    font-size: 18px;
 }

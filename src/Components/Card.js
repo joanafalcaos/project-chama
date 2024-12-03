@@ -1,20 +1,17 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+import { Card as MUICard, CardContent, CardMedia, Typography, CardActionArea } from '@mui/material';
 
-const CustomCard = ({ title, content }) => {
+function Card(props) {
   return (
-    <Card variant="outlined" style={{ margin: '10px' }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2">
-          {content}
-        </Typography>
-      </CardContent>
-    </Card>
+    <MUICard sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia component="img" height="140" image={props.image}/><CardContent>
+          <Typography gutterBottom variant="h5" component="div">{props.title}</Typography>
+          <Typography variant="body2" color="text.secondary">{props.subtitle}</Typography>
+        </CardContent>
+      </CardActionArea>
+    </MUICard>
   );
-};
+}
 
-export default CustomCard;
+export default Card;

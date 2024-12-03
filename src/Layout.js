@@ -27,27 +27,30 @@ const Layout = ({ children }) => {
   return (
     <div>
       {/* Barra de navegação superior */}
-      <AppBar position="sticky" sx={{ backgroundColor: '#fff', boxShadow: 'none' }}>
+      <AppBar position="sticky" sx={{ backgroundColor: '#0A0A33', boxShadow: 'none' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           
           {/* Ícone de menu à esquerda */}
-          <IconButton edge="start" sx={{ color: '#0A0A33' }} onClick={toggleDrawer(true)}>
+          <IconButton edge="start" sx={{ color: '#ffff' }} onClick={toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
 
           {/* Botões de navegação alinhados à direita */}
           <div style={{ marginLeft: 'auto', display: 'flex' }}>
-            <Button component={Link} to="/" sx={{ color: '#0A0A33', fontWeight: 'bold', marginLeft: '20px' }}>
+            <Button component={Link} to="/" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
               Home
             </Button>
-            <Button component={Link} to="/stories" sx={{ color: '#0A0A33', fontWeight: 'bold', marginLeft: '20px' }}>
+            <Button component={Link} to="/stories" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
               Registros
             </Button>
-            <Button component={Link} to="/mapa" sx={{ color: '#0A0A33', fontWeight: 'bold', marginLeft: '20px' }}>
+            <Button component={Link} to="/mapa" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
               Mapa
             </Button>
+            <Button component={Link} to="/profile" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
+              Perfil
+            </Button>
             {/* Botão de Logout com ícone */}
-            <IconButton onClick={handleLogout} sx={{ color: '#0A0A33', marginLeft: '20px' }}>
+            <IconButton onClick={handleLogout} sx={{ color: '#ffff', marginLeft: '20px' }}>
               <LogoutIcon />
             </IconButton>
           </div>
