@@ -1,72 +1,89 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; 
-import { AppBar, Toolbar, Button, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu'; 
-import LogoutIcon from '@mui/icons-material/Logout';  
+import { Link, useNavigate } from 'react-router-dom';
+import {AppBar,Toolbar,IconButton,Drawer,List,ListItem,ListItemIcon,ListItemText,Button,Divider,Box,} from '@mui/material';
+import {Menu as MenuIcon, Home as HomeIcon, Whatshot as FireIcon, Map as MapIcon, Person as PersonIcon, Info as InfoIcon, Logout as LogoutIcon} from '@mui/icons-material';
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = (isOpen) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    setOpen(open);
+    setOpen(isOpen);
   };
 
-  // Função de logout
   const handleLogout = () => {
-    // Limpar os dados de autenticação (exemplo: token do localStorage)
     localStorage.removeItem('authToken');
-    
-    // Redirecionar para a tela de login ou página inicial
-    navigate('/login'); 
+    navigate('/login');
   };
+
+  const menuOptions = [
+    { label: 'Home', icon: <HomeIcon />, path: '/' },
+    { label: 'Registros', icon: <FireIcon />, path: '/stories' },
+    { label: 'Mapa', icon: <MapIcon />, path: '/mapa' },
+    { label: 'Perfil', icon: <PersonIcon />, path: '/profile' },
+  ];
 
   return (
     <div>
-      {/* Barra de navegação superior */}
       <AppBar position="sticky" sx={{ backgroundColor: '#0A0A33', boxShadow: 'none' }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          
-          {/* Ícone de menu à esquerda */}
-          <IconButton edge="start" sx={{ color: '#ffff' }} onClick={toggleDrawer(true)}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <IconButton edge="start" sx={{ color: '#ffff', marginRight: 'auto' }} onClick={toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
 
-          {/* Botões de navegação alinhados à direita */}
-          <div style={{ marginLeft: 'auto', display: 'flex' }}>
-            <Button component={Link} to="/" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
-              Home
+          {menuOptions.map((option) => (
+            <Button
+              key={option.label}
+              component={Link}
+              to={option.path}
+              sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}
+              startIcon={option.icon}
+            >
+              {option.label}
             </Button>
-            <Button component={Link} to="/stories" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
-              Registros
-            </Button>
-            <Button component={Link} to="/mapa" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
-              Mapa
-            </Button>
-            <Button component={Link} to="/profile" sx={{ color: '#ffff', fontWeight: 'bold', marginLeft: '20px' }}>
-              Perfil
-            </Button>
-            {/* Botão de Logout com ícone */}
-            <IconButton onClick={handleLogout} sx={{ color: '#ffff', marginLeft: '20px' }}>
-              <LogoutIcon />
-            </IconButton>
-          </div>
+          ))}
+
+          <IconButton onClick={handleLogout} sx={{ color: '#ffff', marginLeft: '20px' }}>
+            <LogoutIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
-      {/* Drawer com links de navegação */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <List>
-          <ListItem button component={Link} to="/sobre" onClick={toggleDrawer(false)}>
-            <ListItemText primary="Sobre" />
-          </ListItem>
-        </List>
+        <Box sx={{ width: 250 }}>
+          <Divider />
+
+          <List>
+            {menuOptions.map((option) => (
+              <ListItem button key={option.label} component={Link} to={option.path} onClick={toggleDrawer(false)}>
+                <ListItemIcon>{option.icon}</ListItemIcon>
+                <ListItemText primary={option.label} />
+              </ListItem>
+            ))}
+
+            <ListItem button component={Link} to="/sobre" onClick={toggleDrawer(false)}>
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sobre" />
+            </ListItem>
+          </List>
+          <Divider />
+
+          <List>
+            <ListItem button onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sair" />
+            </ListItem>
+          </List>
+        </Box>
       </Drawer>
 
-      {/* Conteúdo da página */}
       <div style={{ padding: '20px' }}>
         {children}
       </div>
