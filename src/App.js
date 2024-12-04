@@ -5,6 +5,7 @@ import Sobre from './Pages/Sobre';
 import Login from './Pages/Login';
 import Layout from './Layout';
 import Stories from './Pages/Stories';
+import Profile from './Pages/Profile';
 import AddStory from './Components/AddStory';
 import ListStories from './Components/ListStories';
 import Mapa from './Pages/Mapa';
@@ -50,6 +51,11 @@ function App() {
         <Route path="/mapa" element={
           <Layout>
             <Mapa />
+          </Layout>
+        } />
+        <Route path="/profile" element={
+          <Layout>
+            <Profile />
           </Layout>
         } />
       </Routes>
