@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Pages/Home';
 import Sobre from './Pages/Sobre';
 import Login from './Pages/Login';
+import Signup from './Pages/Signup';
 import Layout from './Layout';
 import Stories from './Pages/Stories';
 import Profile from './Pages/Profile';
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         {/* Rotas sem autenticação */}
         <Route path="/login" element={<Login /* setAuthenticated={setAuthenticated} */ />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/" element={
           <Layout>
             <Home />

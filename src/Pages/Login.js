@@ -19,6 +19,10 @@ const Login = ({ setAuthenticated }) => {
     }
   };
 
+  const handleSignup = () => {
+    navigate('/signup');
+  }
+
   return (
     <div className="login-container">
       <img src={logo} alt="Logo" className="login-logo" />
@@ -38,7 +42,7 @@ const Login = ({ setAuthenticated }) => {
       />
       <p className="login-link">Esqueci a senha</p>
       <button onClick={handleLogin} className="login-button">Entrar</button>
-      <p className="login-registerText">Não tem conta? Cadastre-se</p>
+      <p className="login-registerText">Não tem conta? <button onClick={handleSignup} className="login-link-button">Cadastre-se</button></p>
     </div>
   );
 };
