@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
-import bombeiros from './images/bombeiros.png';
+import bombeiros from '../images/bombeiros.png';
 import {Link, Outlet} from "react-router-dom";
 const Home = () => {
   
