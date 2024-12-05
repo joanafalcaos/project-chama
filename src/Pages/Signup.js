@@ -112,17 +112,16 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      <img src={logo} alt="Logo" className="signup-logo" />
+          <select
+      name="userType"
+      value={userType}
+      onChange={(e) => setUserType(e.target.value)}
+      className="signup-select" 
+    >
+      <option value="user">Usuário</option>
+      <option value="firefighter">Bombeiro</option>
+    </select>
       <div className="signup-grid">
-        <select
-          name="userType"
-          value={userType}
-          onChange={(e) => setUserType(e.target.value)}
-          className="signup-input"
-        >
-          <option value="user">Usuário</option>
-          <option value="firefighter">Bombeiro</option>
-        </select>
         <input
           type="text"
           placeholder="Nome *"

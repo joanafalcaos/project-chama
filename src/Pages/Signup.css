@@ -15,16 +15,30 @@
   margin-bottom: 20px;
 }
 
+.signup-select {
+  width: 200px; 
+  height: 40px;
+  margin-bottom: 20px; 
+  padding: 0 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 16px;
+  text-align: center; 
+  outline: none;
+  transition: all 0.3s ease;
+}
+
 .signup-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Garante adaptação dinâmica */
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 40px; 
   width: 100%;
   max-width: 600px;
 }
 
 .signup-input {
-  width: 100%; /* Adapta à largura do grid */
+  width: 100%;
   height: 40px;
   padding: 0 15px;
   border-radius: 20px;
@@ -32,7 +46,7 @@
   background-color: white;
   outline: none;
   font-size: 16px;
-  text-align: left; /* Alinha o texto à esquerda para leitura clara */
+  text-align: left; 
   transition: all 0.3s ease;
 }
 
@@ -51,7 +65,7 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin: 0 auto; /* Centraliza o botão */
+  margin: 30px auto 0; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
