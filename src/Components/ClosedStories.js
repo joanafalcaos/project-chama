@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './ListStories.css';
-import { Container, Typography, List, ListItemText, IconButton, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Container, Typography, List, ListItemText, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 
-const ListStories = () => {
+const ClosedStories = () => {
     const [stories, setStories] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -16,7 +15,7 @@ const ListStories = () => {
         if (storedUser && storedUser.userId) {
             setUserId(storedUser.userId);
             if (!storedUser.cpf) {
-                setIsBombeiro(true);
+                setIsBombeiro(true); // Se o CPF não está presente, é bombeiro
             }
         }
     }, []);
@@ -33,38 +32,18 @@ const ListStories = () => {
             }
 
             const data = await response.json();
-            const filteredData = data.filter((report) => report.status === true);
+
+            const closedReports = data.filter((report) => report.status === false || report.status === 'false');
 
             if (isBombeiro) {
-                setStories(data); 
+                setStories(closedReports);
             } else if (userId) {
-                setStories(data.filter((report) => report.userId === userId));
+                setStories(closedReports.filter((report) => report.userId === userId));
             } else {
                 setError('User ID não encontrado');
             }
         } catch (error) {
             console.error('Erro ao buscar relatos:', error);
-            setError(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const deactivateReport = async (id) => {
-        setLoading(true);
-        try {
-            const response = await fetch(`http://localhost:8080/api/reports/${id}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                throw new Error('Erro ao desativar o relato');
-            }
-
-            setStories((prevStories) => prevStories.filter((report) => report.id !== id));
-            console.log(`Relato com ID ${id} desativado com sucesso.`);
-        } catch (error) {
-            console.error('Erro ao desativar o relato:', error);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -79,23 +58,16 @@ const ListStories = () => {
         setSelectedStory(null);
     };
 
-    const handleEncerrar = (id) => {
-        console.log(`Relato com ID ${id} encerrado.`);
-    };
-
-    const handleInvalidar = (id) => {
-        console.log(`Relato com ID ${id} invalidado.`);
-    };
-
     useEffect(() => {
         if (userId !== null) {
             fetchReports();
         }
     }, [userId, isBombeiro]);
+
     return (
         <Container maxWidth="md" className="list-stories-container">
             <Typography variant="h4" gutterBottom>
-                Relatos ativos
+                Relatos Fechados
             </Typography>
             {error && (
                 <Typography variant="body1" color="error">
@@ -112,35 +84,6 @@ const ListStories = () => {
                                 primary={story.description}
                                 onClick={() => handleStoryClick(story)}
                             />
-                            <div className="divider" />
-                            {!isBombeiro && (
-                                <IconButton
-                                    aria-label="cancelar"
-                                    onClick={() => deactivateReport(story.id)}
-                                    sx={{
-                                        color: 'red',
-                                    }}
-                                >
-                                    <CancelIcon />
-                                </IconButton>
-                            )}
-
-                            {isBombeiro && (
-                                <>
-                                    <Button
-                                        onClick={() => handleEncerrar(story.id)}
-                                        color="secondary"
-                                    >
-                                        Encerrar
-                                    </Button>
-                                    <Button
-                                        onClick={() => handleInvalidar(story.id)}
-                                        color="secondary"
-                                    >
-                                        Invalidar
-                                    </Button>
-                                </>
-                            )}
                         </div>
                     ))}
                 </List>
@@ -172,4 +115,4 @@ const ListStories = () => {
     );
 };
 
-export default ListStories;
+export default ClosedStories;
