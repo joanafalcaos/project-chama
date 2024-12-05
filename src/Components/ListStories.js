@@ -8,43 +8,45 @@ const ListStories = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchStories = async () => {
+    const fetchReports = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8080/stories', {
+            const response = await fetch('http://localhost:8080/api/reports', {
                 method: 'GET',
             });
 
             if (!response.ok) {
-                throw new Error('Erro na rede ao buscar histórias');
+                throw new Error('Erro na rede ao buscar relatos');
             }
 
             const data = await response.json();
-            setStories(data.filter(story => story.active));
+
+            // Filtrando apenas os relatos com userId = 1
+            setStories(data.filter((report) => report.userId === 1));
         } catch (error) {
-            console.error('Erro ao buscar histórias:', error);
+            console.error('Erro ao buscar relatos:', error);
             setError(error.message);
         } finally {
             setLoading(false);
         }
     };
 
-   
-    const deactivateStory = async (id) => {
+    const deactivateReport = async (id) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8080/stories/${id}/deactivate`, {
-                method: 'PUT',
+            const response = await fetch(`http://localhost:8080/api/reports/${id}`, {
+                method: 'DELETE',
             });
 
             if (!response.ok) {
-                throw new Error('Erro ao desativar a história');
+                throw new Error('Erro ao desativar o relato');
             }
 
-            
-            setStories(stories.filter(story => story.id !== id));
+            // Atualizando a lista local removendo o relato desativado
+            setStories((prevStories) => prevStories.filter((report) => report.id !== id));
+            console.log(`Relato com ID ${id} desativado com sucesso.`);
         } catch (error) {
-            console.error('Erro ao desativar a história:', error);
+            console.error('Erro ao desativar o relato:', error);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -52,20 +54,13 @@ const ListStories = () => {
     };
 
     useEffect(() => {
-        fetchStories();
+        fetchReports();
     }, []);
 
     return (
-        <Container maxWidth="false" disableGutters className="list-stories-container">
+        <Container maxWidth="md" className="list-stories-container">
             <Typography variant="h4" gutterBottom>
                 Relatos ativos
-            </Typography>
-            <Typography
-                variant="body1"
-                gutterBottom
-                sx={{ color: 'aliceblue', padding: '5px' }}
-            >
-                Seus relatos ativos são:
             </Typography>
             {error && (
                 <Typography variant="body1" color="error">
@@ -75,20 +70,44 @@ const ListStories = () => {
             {loading ? (
                 <CircularProgress />
             ) : (
-                <List>
-                    {stories.map(story => (
-                        <div className='list-itens' key={story.id}>
-                            <ListItemText primary={story.description} />
-                            <div className='divider' />
-                            <IconButton 
-                                aria-label="cancelar"
-                                onClick={() => deactivateStory(story.id)}
+                <>
+                    {stories.length > 0 ? (
+                        <>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                sx={{ color: '#0d0b3f', padding: '5px' }}
                             >
-                                <CancelIcon />
-                            </IconButton>
-                        </div>
-                    ))}
-                </List>
+                                Seus relatos ativos são:
+                            </Typography>
+                            <List>
+                                {stories.map((story) => (
+                                    <div className="list-itens" key={story.id}>
+                                        <ListItemText primary={story.description} />
+                                        <div className="divider" />
+                                        <IconButton
+                                            aria-label="cancelar"
+                                            onClick={() => deactivateReport(story.id)}
+                                            sx={{
+                                                color: 'red', // Altere para a cor desejada
+                                            }}
+                                        >
+                                            <CancelIcon />
+                                        </IconButton>
+                                    </div>
+                                ))}
+                            </List>
+                        </>
+                    ) : (
+                        <Typography
+                            variant="body1"
+                            gutterBottom
+                            sx={{ color: '#0d0b3f', padding: '5px' }}
+                        >
+                            Você não possui relatos ativos.
+                        </Typography>
+                    )}
+                </>
             )}
         </Container>
     );

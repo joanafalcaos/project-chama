@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../chama2.png'; 
+import logo from '../chama2.png';
 import './Login.css';
 
+//fix
 const Login = ({ setAuthenticated }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // Para mostrar feedback enquanto carrega
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
+      const response = await fetch('http://localhost:8080/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -26,12 +27,17 @@ const Login = ({ setAuthenticated }) => {
 
       const data = await response.json();
 
-      // Armazena os dados do usuário
+     
+      if (data.password !== null) {
+        data.password = null;
+      }
+
+     
       localStorage.setItem('authenticated', 'true');
       localStorage.setItem('user', JSON.stringify(data));
 
-      setAuthenticated(true); // Atualiza o estado de autenticação
-      navigate('/'); 
+      setAuthenticated(true);
+      navigate('/');
     } catch (error) {
       alert(error.message);
     } finally {
@@ -47,10 +53,10 @@ const Login = ({ setAuthenticated }) => {
     <div className="login-container">
       <img src={logo} alt="Logo" className="login-logo" />
       <input
-        type="text"
-        placeholder="Login"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)} 
         className="login-input"
       />
       <input

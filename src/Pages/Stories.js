@@ -14,7 +14,7 @@ const Stories = () => {
         <div className="cards-container">
           <Link to="/stories/add" className="stories-link"><Card image={incendioFumaca} title="Relatar queimada" subtitle="Clique aqui para relatar uma queimada" /></Link>
           <Link to="/stories/list" className="stories-link"><Card image={incendioApagando} title="Relatos ativos" subtitle="Clique aqui para ver seus relatos ativos" /></Link>
-          <Link to="/stories/list" className="stories-link"><Card image={extintor} title="Relatos encerrados" subtitle="Clique aqui para ver seus relatos encerrados" /></Link>
+          <Link to="/stories/closed" className="stories-link"><Card image={extintor} title="Relatos encerrados" subtitle="Clique aqui para ver seus relatos encerrados" /></Link>
         </div>
       </div>
     );
