@@ -6,7 +6,7 @@
   height: 100vh;
   background-color: #0d0b3f;
   color: white;
-  text-align: center;
+  padding: 20px;
 }
 
 .signup-logo {
@@ -15,23 +15,35 @@
   margin-bottom: 20px;
 }
 
+.signup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Garante adaptação dinâmica */
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
 .signup-input {
-  width: 250px;
+  width: 100%; /* Adapta à largura do grid */
   height: 40px;
-  margin-bottom: 15px;
-  padding: 0 10px;
+  padding: 0 15px;
   border-radius: 20px;
-  border: none;
+  border: 1px solid #ccc;
+  background-color: white;
   outline: none;
   font-size: 16px;
-  text-align: center;
-  background-color: white;
+  text-align: left; /* Alinha o texto à esquerda para leitura clara */
+  transition: all 0.3s ease;
+}
+
+.signup-input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
 .signup-button {
-  width: 120px;
-  height: 40px;
-  margin: 10px 0;
+  width: 150px;
+  height: 45px;
   border-radius: 20px;
   border: none;
   background-color: white;
@@ -39,27 +51,46 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  margin: 0 auto; /* Centraliza o botão */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .signup-button:hover {
   background-color: #f0f0f0;
 }
 
-.signup-link-text {
-  margin-top: 10px;
+.signup-footer {
+  margin-top: 20px;
   font-size: 14px;
-  color: white;
+  text-align: center;
 }
 
-.signup-link-button {
-  background: none;
-  border: none;
+.signup-link {
   color: white;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+  transition: color 0.3s ease;
 }
 
-.signup-link-button:hover {
+.signup-link:hover {
   color: #f0f0f0;
+}
+
+/* Ajustes para manter consistência entre os campos */
+.signup-grid > input,
+.signup-grid > select {
+  min-width: 250px; /* Tamanho mínimo para evitar variação */
+  max-width: 100%; /* Respeita largura do container */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .signup-grid {
+    gap: 15px; /* Espaçamento reduzido em telas menores */
+  }
+  .signup-button {
+    width: 100%;
+  }
 }
