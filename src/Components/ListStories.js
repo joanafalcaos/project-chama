@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './ListStories.css';
-import { Container, Typography, List, ListItemText, IconButton, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import {
+    Container,
+    Typography,
+    List,
+    ListItemText,
+    IconButton,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Button,
+} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const ListStories = () => {
@@ -36,9 +48,9 @@ const ListStories = () => {
             const filteredData = data.filter((report) => report.status === true);
 
             if (isBombeiro) {
-                setStories(data); 
+                setStories(filteredData);
             } else if (userId) {
-                setStories(data.filter((report) => report.userId === userId));
+                setStories(filteredData.filter((report) => report.userId === userId));
             } else {
                 setError('User ID não encontrado');
             }
@@ -71,6 +83,52 @@ const ListStories = () => {
         }
     };
 
+    const handleEncerrar = async (id) => {
+        try {
+            // Pegando o valor atual de isFire
+            const story = stories.find((s) => s.id === id);
+            const isFire = story?.isFire || 'N'; // Valor padrão é 'N'
+
+            const response = await fetch(
+                `http://localhost:8080/api/reports/${id}?ativo=N&isFire=${isFire}`,
+                {
+                    method: 'PUT',
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Erro ao encerrar o relato');
+            }
+
+            console.log(`Relato com ID ${id} encerrado com sucesso.`);
+            setStories((prevStories) => prevStories.filter((story) => story.id !== id));
+        } catch (error) {
+            console.error('Erro ao encerrar o relato:', error);
+            setError(error.message);
+        }
+    };
+
+    const handleInvalidar = async (id) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/reports/${id}?ativo=N&isFire=N`,
+                {
+                    method: 'PUT',
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Erro ao invalidar o relato');
+            }
+
+            console.log(`Relato com ID ${id} invalidado com sucesso.`);
+            setStories((prevStories) => prevStories.filter((story) => story.id !== id));
+        } catch (error) {
+            console.error('Erro ao invalidar o relato:', error);
+            setError(error.message);
+        }
+    };
+
     const handleStoryClick = (story) => {
         setSelectedStory(story);
     };
@@ -79,19 +137,12 @@ const ListStories = () => {
         setSelectedStory(null);
     };
 
-    const handleEncerrar = (id) => {
-        console.log(`Relato com ID ${id} encerrado.`);
-    };
-
-    const handleInvalidar = (id) => {
-        console.log(`Relato com ID ${id} invalidado.`);
-    };
-
     useEffect(() => {
         if (userId !== null) {
             fetchReports();
         }
     }, [userId, isBombeiro]);
+
     return (
         <Container maxWidth="md" className="list-stories-container">
             <Typography variant="h4" gutterBottom>
@@ -147,10 +198,7 @@ const ListStories = () => {
             )}
 
             {selectedStory && (
-                <Dialog
-                    open={true}
-                    onClose={handleCloseDetails}
-                >
+                <Dialog open={true} onClose={handleCloseDetails}>
                     <DialogTitle>Detalhes do Relato</DialogTitle>
                     <DialogContent>
                         <Typography variant="body1"><strong>Descrição:</strong> {selectedStory.description}</Typography>
