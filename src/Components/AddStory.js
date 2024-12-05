@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddStory.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField, Button, Box } from '@mui/material';
@@ -13,7 +13,7 @@ const theme = createTheme({
 
 function AddStory() {
   const [relato, setRelato] = useState('');
-  const [userId] = useState(1); // userId constante
+  const [userId, setUserId] = useState(null);
   const [address, setAddress] = useState({
     zipCode: '',
     street: '',
@@ -21,6 +21,13 @@ function AddStory() {
     neighborhood: '',
     city: '',
   });
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser && storedUser.userId) {
+      setUserId(storedUser.userId);
+    }
+  }, []);
 
   const handleRelatoChange = (event) => {
     setRelato(event.target.value);
@@ -36,6 +43,11 @@ function AddStory() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (userId === null) {
+      console.error('Erro: userId não encontrado');
+      return;
+    }
 
     const data = {
       description: relato,
