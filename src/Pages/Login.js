@@ -42,7 +42,9 @@ const Login = ({ setAuthenticated }) => {
       />
       <p className="login-link">Esqueci a senha</p>
       <button onClick={handleLogin} className="login-button">Entrar</button>
-      <p className="login-registerText">Não tem conta? <button onClick={handleSignup} className="login-link-button">Cadastre-se</button></p>
+      <p className="login-registerText">Não tem conta?</p>
+<button onClick={handleSignup} className="login-link-button">Cadastre-se</button>
+
     </div>
   );
 };
