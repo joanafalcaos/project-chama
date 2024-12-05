@@ -35,7 +35,7 @@ const Home = () => {
             importantes para que possamos agir rapidamente. Cada denúncia conta e
             ajuda a preservar nosso ecossistema.
           </p>
-          <Link to="/Stories.js" className="report-button">Reportar</Link>
+          <Link to="/stories" className="report-button">Reportar</Link>
         </div>
          <img src={bombeiros} alt="bombeiros" className="report-image"/>
         
