@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,15 +6,16 @@
   height: 100vh;
   background-color: #0d0b3f;
   color: white;
+  text-align: center;
 }
 
-.login-logo {
+.signup-logo {
   width: 300px;
   height: auto;
   margin-bottom: 20px;
 }
 
-.login-input {
+.signup-input {
   width: 250px;
   height: 40px;
   margin-bottom: 15px;
@@ -24,48 +25,41 @@
   outline: none;
   font-size: 16px;
   text-align: center;
+  background-color: white;
 }
 
-.login-link {
-  color: white;
-  text-decoration: underline;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-size: 14px;
-}
-
-.login-button {
+.signup-button {
   width: 120px;
   height: 40px;
+  margin: 10px 0;
   border-radius: 20px;
   border: none;
   background-color: white;
   color: #0d0b3f;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
-.login-registerText {
-  color: white;
-  font-size: 14px;
+.signup-button:hover {
+  background-color: #f0f0f0;
+}
+
+.signup-link-text {
   margin-top: 10px;
+  font-size: 14px;
+  color: white;
 }
 
-.login-link-button {
-  background-color: transparent;
+.signup-link-button {
+  background: none;
+  border: none;
   color: white;
-  border: 2px solid white;
-  border-radius: 20px;
-  padding: 5px 20px;
-  font-size: 14px;
+  text-decoration: underline;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
+  font-size: 14px;
 }
 
-.login-link-button:hover {
-  background-color: white;
-  color: #0d0b3f;
-  border-color: #0d0b3f;
+.signup-link-button:hover {
+  color: #f0f0f0;
 }

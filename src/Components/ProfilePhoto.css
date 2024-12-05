@@ -1,0 +1,34 @@
+.profile-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+}
+
+.profile-photo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-photo h3 {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.social-icons{
+    margin-top: -30px;
+}
+
+.profile-photo-img {
+    transition: opacity 0.3s ease;
+  }
+  
+  .profile-photo-img:hover {
+    opacity: 0.7;
+  }  
