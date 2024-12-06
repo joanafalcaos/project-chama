@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Button } from '@mui/material';
-import { Home as HomeIcon, Whatshot as FireIcon, Map as MapIcon, Person as PersonIcon, Logout as LogoutIcon } from '@mui/icons-material';
+import { Home as HomeIcon, Whatshot as FireIcon, Map as MapIcon, Person as PersonIcon, Logout as LogoutIcon, ArrowBackIosNew } from '@mui/icons-material';
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -10,6 +10,9 @@ const Layout = ({ children }) => {
     localStorage.removeItem('authToken');
     navigate('/login');
   };
+
+  const paths = window.location.pathname
+  const isStories = paths.includes("add") || paths.includes("list") || paths.includes("closed") ? true : false
 
   const menuOptions = [
     { label: 'Home', icon: <HomeIcon />, path: '/' },
@@ -22,6 +25,15 @@ const Layout = ({ children }) => {
     <div>
       <AppBar position="sticky" sx={{ backgroundColor: '#0A0A33', boxShadow: 'none' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {isStories && (
+          <Button
+            style={{ position: "absolute", left: 20 }}
+            to={'/stories'}
+            component={Link}
+          >
+            <ArrowBackIosNew style={{ fill: "#FFF"}}/>
+          </Button>
+        )}
           {menuOptions.map((option) => (
             <Button
               key={option.label}
