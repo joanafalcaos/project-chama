@@ -6,141 +6,61 @@ import {
     Box,
     Card,
     CardContent,
-    Grid,
+    Grid2,
 } from "@mui/material";
-import ProfilePicture from "../Components/ProfilePicture";
-import EditableProfilePicture from "../Components/EditableProfilePicture";
 import "./Profile.css";
 import perfil from "../images/perfil.png";
 import perfilBombeiro from "../images/perfilBombeiro.png";
 
 const Profile = () => {
-    const [profile, setProfile] = useState({
-        role: "user", // O papel do usuário será configurado aqui, por exemplo, "user" ou "bombeiro"
-        name: "Usuário",
-        cpf: "",
-        dob: "2000-01-01",
-        phone: "",
-        email: "usuario@example.com",
-        cep: "",
-        address: {
-            city: "",
-            uf: "",
-            street: "",
-            neighborhood: "",
-            complement: "",
-        },
-        // Informações específicas para bombeiro
-        firefighterId: "", // Número de registro do bombeiro
-        specialization: "", // Especialização, se aplicável
+    const [user, setUser] = useState(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        return storedUser || {
+            userId: 1,
+            name: "",
+            email: "",
+            phone: "",
+            address: {
+                addressId: 1,
+                zipCode: "",
+                street: "",
+                houseNumber: "",
+                neighborhood: "",
+                city: "",
+            },
+            cpf: "",
+            patent: "",
+            fireHouse: "",
+            firefighterRegister: "",
+        };
     });
 
     const [isEditing, setIsEditing] = useState(false);
     const [profilePicture, setProfilePicture] = useState(
-        profile.role === "bombeiro" ? perfilBombeiro : perfil
+        user.cpf ? perfil : perfilBombeiro
     );
 
     useEffect(() => {
-        // Atualiza a imagem do perfil se o papel mudar
-        setProfilePicture(profile.role === "bombeiro" ? perfilBombeiro : perfil);
-    }, [profile.role]);
-
-    const formatCpf = (value) => {
-        const numericValue = value.replace(/\D/g, ""); 
-        const formattedValue = numericValue
-            .replace(/^(\d{3})(\d)/, "$1.$2")
-            .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
-            .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, "$1.$2.$3-$4");
-        return formattedValue.slice(0, 14); 
-    };
-
-    const formatPhone = (value) => {
-        const numericValue = value.replace(/\D/g, "");
-        const formattedValue = numericValue
-            .replace(/^(\d{2})(\d)/, "($1) $2")
-            .replace(/(\d{5})(\d{4})$/, "$1-$2");
-        return formattedValue.slice(0, 15);
-    };
-
-    const formatCep = (value) => {
-        const numericValue = value.replace(/\D/g, "");
-        const formattedValue = numericValue.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
-        return formattedValue.slice(0, 9);
-    };
+        setProfilePicture(user.cpf ? perfil : perfilBombeiro);
+    }, [user.cpf]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        let formattedValue = value;
+        const nameParts = name.split(".");
 
-        if (name === "cpf") formattedValue = formatCpf(value);
-        if (name === "phone") formattedValue = formatPhone(value);
-        if (name === "cep") formattedValue = formatCep(value);
-        if (name === "uf") formattedValue = value.toUpperCase().slice(0, 2);
-        if (name === "name") formattedValue = value.slice(0, 100);
-        if (name === "email") formattedValue = value.slice(0, 254);
-
-        setProfile((prev) => ({
-            ...prev,
-            [name]: formattedValue,
-        }));
-    };
-
-    const handleAddressChange = (e) => {
-        const { name, value } = e.target;
-        const maxLengths = {
-            city: 50,
-            street: 100,
-            neighborhood: 50,
-            complement: 50,
-        };
-        const formattedValue = value.slice(0, maxLengths[name] || 50);
-
-        setProfile((prev) => ({
-            ...prev,
-            address: {
-                ...prev.address,
-                [name]: formattedValue,
-            },
-        }));
-    };
-
-    const handleCepChange = async (e) => {
-        const cep = formatCep(e.target.value); 
-        setProfile((prev) => ({ ...prev, cep }));
-
-        if (cep.length === 9) {
-            try {
-                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                const data = await response.json();
-                if (!data.erro) {
-                    setProfile((prev) => ({
-                        ...prev,
-                        address: {
-                            city: data.localidade,
-                            uf: data.uf,
-                            street: data.logradouro,
-                            neighborhood: data.bairro,
-                            complement: "",
-                        },
-                    }));
-                }
-            } catch (error) {
-                console.error("Erro ao buscar o CEP:", error);
-            }
-        }
-    };
-
-    const handleProfilePictureChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setProfilePicture(reader.result); 
-                console.log("Profile picture updated:", reader.result);
-            };
-            reader.readAsDataURL(file);
+        if (nameParts.length > 1) {
+            setUser((prev) => ({
+                ...prev,
+                [nameParts[0]]: {
+                    ...prev[nameParts[0]],
+                    [nameParts[1]]: value,
+                },
+            }));
         } else {
-            console.log("Nenhuma imagem selecionada");
+            setUser((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
         }
     };
 
@@ -148,178 +68,129 @@ const Profile = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsEditing(false);
-        alert("Perfil salvo com sucesso!");
+
+        const requestBody = {
+            ...user,
+            address: {
+                addressId: user.address.addressId,
+                zipCode: user.address.zipCode || "A",
+                street: user.address.street || "A",
+                houseNumber: user.address.houseNumber || 1,
+                neighborhood: user.address.neighborhood || "A",
+                city: user.address.city || "A",
+            },
+        };
+
+        let apiUrl = "";
+        if (user.cpf) {
+            apiUrl = `http://localhost:8080/api/reporters/updateReporter/${user.userId}`;
+        } else {
+            apiUrl = `http://localhost:8080/api/firefighters/${user.userId}`;
+        }
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao atualizar perfil");
+            }
+
+            const data = await response.json();
+            localStorage.setItem("user", JSON.stringify(data)); // Atualiza o localStorage com os dados atualizados
+            alert("Perfil atualizado com sucesso!");
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     return (
         <Box className="profile-container">
             <Card sx={{ maxWidth: 500, width: "100%" }}>
                 <CardContent>
-                    {isEditing ? (
-                        <EditableProfilePicture
-                            src={profilePicture}
-                            onChange={handleProfilePictureChange}
-                        />
-                    ) : (
-                        <ProfilePicture src={profilePicture} />
-                    )}
+                    <img
+                        src={profilePicture}
+                        alt="Foto do Perfil"
+                        style={{ width: 100, height: 100, borderRadius: "50%" }}
+                    />
                     <Typography variant="h5" sx={{ margin: "20px 0" }}>
-                        {isEditing ? "Editar Perfil" : profile.name}
+                        {isEditing ? "Editar Perfil" : user.name || "Usuário"}
                     </Typography>
-                    {isEditing ? (
-                        <Box component="form" noValidate autoComplete="off">
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Nome Completo"
-                                        name="name"
-                                        value={profile.name}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="CPF"
-                                        name="cpf"
-                                        value={profile.cpf}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Data de Nascimento"
-                                        name="dob"
-                                        type="date"
-                                        value={profile.dob}
-                                        InputLabelProps={{ shrink: true }}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Celular"
-                                        name="phone"
-                                        value={profile.phone}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="E-mail"
-                                        name="email"
-                                        value={profile.email}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        fullWidth
-                                        label="CEP"
-                                        name="cep"
-                                        value={profile.cep}
-                                        onChange={handleCepChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={8}>
-                                    <TextField
-                                        fullWidth
-                                        label="Logradouro"
-                                        name="street"
-                                        value={profile.address.street}
-                                        onChange={handleAddressChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Cidade"
-                                        name="city"
-                                        value={profile.address.city}
-                                        onChange={handleAddressChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <TextField
-                                        fullWidth
-                                        label="UF"
-                                        name="uf"
-                                        value={profile.address.uf}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        fullWidth
-                                        label="Bairro"
-                                        name="neighborhood"
-                                        value={profile.address.neighborhood}
-                                        onChange={handleAddressChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Complemento"
-                                        name="complement"
-                                        value={profile.address.complement}
-                                        onChange={handleAddressChange}
-                                    />
-                                </Grid>
-                                {/* Se o usuário for bombeiro, exibe campos específicos */}
-                                {profile.role === "bombeiro" && (
-                                    <>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="Número de Registro do Bombeiro"
-                                                name="firefighterId"
-                                                value={profile.firefighterId}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                label="Especialização"
-                                                name="specialization"
-                                                value={profile.specialization}
-                                                onChange={handleChange}
-                                            />
-                                        </Grid>
-                                    </>
-                                )}
-                            </Grid>
-                        </Box>
-                    ) : (
-                        <>
-                            <Typography variant="body1">Nome: {profile.name}</Typography>
-                            <Typography variant="body1">CPF: {profile.cpf}</Typography>
-                            <Typography variant="body1">Data de Nascimento: {profile.dob}</Typography>
-                            <Typography variant="body1">Celular: {profile.phone}</Typography>
-                            <Typography variant="body1">E-mail: {profile.email}</Typography>
-                            <Typography variant="body1">CEP: {profile.cep}</Typography>
-                            <Typography variant="body1">Endereço: {profile.address.street}, {profile.address.city}, {profile.address.uf}</Typography>
-                            {/* Exibe informações adicionais se o usuário for bombeiro */}
-                            {profile.role === "bombeiro" && (
-                                <>
-                                    <Typography variant="body1">Número de Registro do Bombeiro: {profile.firefighterId}</Typography>
-                                    <Typography variant="body1">Especialização: {profile.specialization}</Typography>
-                                </>
-                            )}
-                        </>
-                    )}
+                    <Box component="form" noValidate autoComplete="off">
+                        <Grid2 container spacing={2}>
+                            {Object.entries(user).map(([key, value]) => {
+                                if (key === "userId" || key === "profilePicture") return null;
+
+                                const labelMap = {
+                                    name: "Nome",
+                                    email: "E-mail",
+                                    phone: "Celular",
+                                    address: "Endereço",
+                                    zipCode: "CEP",
+                                    street: "Rua",
+                                    houseNumber: "Número",
+                                    neighborhood: "Bairro",
+                                    city: "Cidade",
+                                    patent: "Patente",
+                                    fireHouse: "Quartel",
+                                    firefighterRegister: "Registro do Bombeiro",
+                                };
+
+                                if (key === "address" && value !== null) {
+                                    // Remover o addressId
+                                    const { addressId, ...filteredAddress } = value;
+
+                                    return Object.entries(filteredAddress).map(
+                                        ([subKey, subValue]) => (
+                                            <Grid2 item xs={12} key={`${key}.${subKey}`}>
+                                                <TextField
+                                                    fullWidth
+                                                    label={labelMap[subKey] || subKey}
+                                                    name={`${key}.${subKey}`}
+                                                    value={subValue || ""}
+                                                    onChange={handleChange}
+                                                    disabled={!isEditing}
+                                                    required
+                                                />
+                                            </Grid2>
+                                        )
+                                    );
+                                }
+
+                                return (
+                                    <Grid2 item xs={12} key={key}>
+                                        <TextField
+                                            fullWidth
+                                            label={labelMap[key] || key}
+                                            name={key}
+                                            value={value || ""}
+                                            onChange={handleChange}
+                                            disabled={!isEditing}
+                                            required
+                                        />
+                                    </Grid2>
+                                );
+                            })}
+                        </Grid2>
+                    </Box>
                     <Button
                         variant="contained"
                         color="secondary"
                         onClick={toggleEditing}
-                        sx={{ marginTop: 2 }}
+                        sx={{
+                            marginTop: 2,
+                            backgroundColor: "#0A0A33",
+                            '&:hover': {
+                                backgroundColor: "#0A0A33",
+                            }
+                        }}
                     >
                         {isEditing ? "Cancelar" : "Editar Perfil"}
                     </Button>
